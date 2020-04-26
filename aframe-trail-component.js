@@ -40,8 +40,7 @@ AFRAME.registerSystem('trail', {
 
 	var material = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide, wireframe: false, transparent: true, opacity: 0.2 } ); // opacity: 0.2
 	object.userData.trail.mesh = new THREE.Mesh( geometry, material );
-
-	AFRAME.scenes[0].object3D.add( object.userData.trail.mesh );
+	this.el.sceneEl.object3D.add( object.userData.trail.mesh );
 
 	this.trails.haveTrails.push( object );
 
