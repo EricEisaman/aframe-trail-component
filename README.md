@@ -4,9 +4,6 @@ ___
 
 Trail component base upon code by [svartmc](https://github.com/svartmc).
 
-![pic](https://cdn.glitch.com/76718f34-7920-4a0e-bee1-bd0646eab927%2Ftrail_component.gif?v=1587846617145)
-
-
 ### API
 
 | Parameter  | Default | Description              |
@@ -19,11 +16,14 @@ Trail component base upon code by [svartmc](https://github.com/svartmc).
 
 ## Usage
 
+![pic](https://cdn.glitch.com/76718f34-7920-4a0e-bee1-bd0646eab927%2Ftrail_component.gif?v=1587846617145)
+
 ### HTML (entity with single trail instance and default settings)
 ```
 <a-sphere trail></a-sphere>
 
 ```
+![pic](https://cdn.glitch.com/76718f34-7920-4a0e-bee1-bd0646eab927%2Fgrabbable_trails.gif?v=1587918027146)
 
 ### HTML (entity with multiple trail instances and custom settings)
 ```
