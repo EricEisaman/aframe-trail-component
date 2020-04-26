@@ -1,5 +1,3 @@
-export default(()=>{
-
 AFRAME.registerSystem('trail', {
   schema: {},  // System schema. Parses into `this.data`.
 
@@ -182,5 +180,5 @@ AFRAME.registerComponent('trail', {
   
 });
   
-})()
+
 
