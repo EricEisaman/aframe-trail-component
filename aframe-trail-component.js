@@ -13,7 +13,7 @@ AFRAME.registerSystem('trail', {
 
   },
   
-  createTrail: function createTrail( object, length, width, resolution ) {
+  createTrail: function createTrail( object, length, width, resolution, color, offset ) {
 
 	// resolution must be less than the length
 
@@ -23,7 +23,9 @@ AFRAME.registerSystem('trail', {
 
 	}
 
-	object.userData.trail = {
+	if(!object.userData.trails) object.userData.trails = [];
+    
+  const trail = {
 
 		length: Math.round( length ),
 		width: width,
@@ -33,68 +35,74 @@ AFRAME.registerSystem('trail', {
 		worldDirection: new THREE.Vector3(),
 
 	}
+  object.userData.trails.push(trail);
 
 	// trail geo
 
 	var geometry = new THREE.PlaneGeometry( 1, length, 1, resolution );
 
-	var material = new THREE.MeshBasicMaterial( { color: 0xffffff, side: THREE.DoubleSide, wireframe: false, transparent: true, opacity: 0.2 } ); // opacity: 0.2
-	object.userData.trail.mesh = new THREE.Mesh( geometry, material );
-	this.el.sceneEl.object3D.add( object.userData.trail.mesh );
+	var material = new THREE.MeshBasicMaterial( { color: color, side: THREE.DoubleSide, wireframe: false, transparent: true, opacity: 0.2 } ); // opacity: 0.2
+	trail.mesh = new THREE.Mesh( geometry, material );
+  trail.mesh.position.add(offset);
+	this.el.sceneEl.object3D.add( trail.mesh );
 
 	this.trails.haveTrails.push( object );
 
 	// setting frustumCulled to false is important because we move the vertices outside the frustum, not the geometry itself
 
-	object.userData.trail.mesh.frustumCulled = false; 
+	trail.mesh.frustumCulled = false; 
 
 	// create history and store vertices
 
-	object.userData.trail.trailHistory = [];
+	trail.trailHistory = [];
 
-	object.userData.trail.trailVertices = [];
+	trail.trailVertices = [];
 
 	for ( var i = 0; i < resolution + 1; i++ ) {
 
-		object.userData.trail.trailVertices[i] = [];
+		trail.trailVertices[i] = [];
 
 	}
 
 	// store vertices based on left or right
 
-	for ( var i = 0; i < object.userData.trail.trailVertices.length; i ++ ) {
+	for ( var i = 0; i < trail.trailVertices.length; i ++ ) {
 
-		object.userData.trail.trailVertices[i][0] = object.userData.trail.mesh.geometry.vertices[i*2];
-		object.userData.trail.trailVertices[i][1] = object.userData.trail.mesh.geometry.vertices[i*2+1];
+		trail.trailVertices[i][0] = trail.mesh.geometry.vertices[i*2];
+		trail.trailVertices[i][1] = trail.mesh.geometry.vertices[i*2+1];
 
 	}
 
 },
   
   updateTrailHistory: function updateTrailHistory( object ) {
+    
+  object.userData.trails.forEach(trail=>{
+    
+    object.getWorldDirection( trail.worldDirection );
 
-	object.getWorldDirection( object.userData.trail.worldDirection );
+	  trail.trailHistory.push( [ object.position.x, object.position.y, object.position.z,       trail.worldDirection.x, trail.worldDirection.z ] );
 
-	object.userData.trail.trailHistory.push( [ object.position.x, object.position.y, object.position.z, object.userData.trail.worldDirection.x, object.userData.trail.worldDirection.z ] );
+	if ( trail.trailHistory.length > trail.length ) {
 
-	if ( object.userData.trail.trailHistory.length > object.userData.trail.length ) {
-
-		object.userData.trail.trailHistory.shift();
+		trail.trailHistory.shift();
 
 	}
+    
+  });  
 
 },
   
   updateTrails: function updateTrails() {
 
-	for ( var i = 0; i < this.trails.haveTrails.length; i++ ) {
+	for ( let i = 0; i < this.trails.haveTrails.length; i++ ) {
 
-		var object = this.trails.haveTrails[i];
-		var trail = object.userData.trail;
-
-		this.updateTrailHistory( object );
-
-		for ( var j = 0; j < trail.trailVertices.length; j++ ) {
+		const object = this.trails.haveTrails[i];
+    this.updateTrailHistory( object );
+		
+    object.userData.trails.forEach(trail=>{
+      
+      for ( var j = 0; j < trail.trailVertices.length; j++ ) {
 
 			var index = Math.round( trail.trailHistory.length / trail.resolution * j );
 
@@ -130,14 +138,19 @@ AFRAME.registerSystem('trail', {
 		}
 
 		trail.mesh.geometry.verticesNeedUpdate = true;
+      
+    });
 
 	}
 
 },
   
   resetTrail: function resetTrail( object ) {
-
-	object.userData.trail.trailHistory = [];
+  
+  object.userData.trails.forEach(trail=>{
+    trail.trailHistory = [];
+  });  
+	
 
 },
   
@@ -152,12 +165,15 @@ AFRAME.registerComponent('trail', {
   schema: {
     length: {default: 80},
     width: {default: 0.8},
-    resolution: {default: 18}//must be less than length
+    resolution: {default: 18},//must be less than length
+    color: {default: 'white'},
+    offset: {type: 'vec3'}
   },
   
+  multiple: true,
+  
   init: function () {
-    this.data.resolution = (this.data.resolution<this.data.length)?this.data.resolution:this.data.length/4;
-    this.system.createTrail(this.el.object3D,this.data.length,this.data.width,this.data.resolution);
+    this.system.createTrail(this.el.object3D,this.data.length,this.data.width,this.data.resolution,this.data.color,this.data.offset);
   },
   
   reset: function(){
