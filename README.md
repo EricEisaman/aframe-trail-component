@@ -44,6 +44,6 @@ s.setAttribute('trail__blue','color:blue; offset:1 0 0');
 s.setAttribute('color','blue');
 s.setAttribute('radius', 0.5);
 s.setAttribute('circle-movement','center:0 6 -20; radius: 6');
-s.sceneEl.appendChild(s);
+AFRAME.scenes[0].appendChild(s);
 
 ```
