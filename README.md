@@ -18,6 +18,12 @@ Trail component base upon code by [svartmc](https://github.com/svartmc).
 
 ![pic](https://cdn.glitch.com/76718f34-7920-4a0e-bee1-bd0646eab927%2Ftrail_component.gif?v=1587846617145)
 
+### Include script tag in HTML Head
+```
+<script src="https://cdn.jsdelivr.net/gh/EricEisaman/aframe-trail-component/aframe-trail-component.min.js"></script>
+
+```
+
 ### HTML (entity with single trail instance and default settings)
 ```
 <a-sphere trail></a-sphere>
