@@ -19,9 +19,20 @@ Trail component base upon code by [svartmc](https://github.com/svartmc).
 
 ## Usage
 
-### HTML
+### HTML (entity with single trail instance and default settings)
 ```
 <a-sphere trail></a-sphere>
+
+```
+
+### HTML (entity with multiple trail instances and custom settings)
+```
+<a-sphere 
+trail__red="color:red; offset:-1 0 0"
+trail__white="color:white; length:120"
+trail__blue="color:blue; offset:1 0 0"
+grabbable
+></a-sphere>
 
 ```
 
