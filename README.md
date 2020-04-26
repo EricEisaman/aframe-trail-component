@@ -47,3 +47,5 @@ s.setAttribute('circle-movement','center:0 6 -20; radius: 6');
 AFRAME.scenes[0].appendChild(s);
 
 ```
+
+![pic](https://cdn.glitch.com/76718f34-7920-4a0e-bee1-bd0646eab927%2Fmultiple_entities.gif?v=1587908954568)
