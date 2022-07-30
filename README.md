@@ -20,7 +20,7 @@ Trail component base upon code by [svartmc](https://github.com/svartmc).
 
 ### Include script tag in HTML Head
 ```
-<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/EricEisaman/aframe-trail-component@v1.0.0/aframe-trail-component.min.js"></script>
 
 ```
