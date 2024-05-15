@@ -98,7 +98,7 @@ AFRAME.registerSystem('trail', {
 
 			// custom the shape changing this width parameter
 
-			var width = THREE.Math.mapLinear( j, 0, trail.resolution + 1, 0, 1 ) * trail.width / 2;
+			var width = THREE.MathUtils.mapLinear( j, 0, trail.resolution + 1, 0, 1 ) * trail.width / 2;
 
 			if ( typeof pos != "undefined" ) {
 
